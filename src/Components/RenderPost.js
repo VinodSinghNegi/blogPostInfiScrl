@@ -29,10 +29,13 @@ const useStyles = makeStyles({
     height: 80,
     borderRadius: 5,
     fontSize: 30,
+    opacity: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    color: "#3e93e8"
+    color: "#E60D57",
+    backgroundImage: "url(Assets/3.jpg)"
+
     // backgroundColor: "#9EC9F6"
   },
 
@@ -102,7 +105,7 @@ export default function RenderPost({ store }) {
           <HashLoader
             css={override}
             size={35}
-            color="#4495e5"
+            color="#E60D57"
             loading={loading}
           />
         ) : (
@@ -145,7 +148,7 @@ export default function RenderPost({ store }) {
                       <HashLoader
                         css={override}
                         size={35}
-                        color="#4495e5"
+                        color="#2c90e8"
                         loading={loading}
                       />
                     ) : (
