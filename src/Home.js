@@ -1,42 +1,63 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import RenderPost from "./Components/RenderPost";
+import HashLoader from "react-spinners/HashLoader";
+import { css } from "@emotion/core";
 
-const saveBlogData = (state, action) => {
-  switch (action.type) {
-    case "SAVE_BLOGDATA": {
-      return action.payload;
-    }
-    default:
-      return state;
+import { makeStyles } from "@material-ui/core/styles";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
+
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   }
-};
+});
 
 const Home = () => {
-  const [store, dispatch] = useReducer(saveBlogData, []);
+  const classes = useStyles();
+  const [store, setStore] = useState([]);
+  const [error, setError] = useState(null);
 
-  const getBlogData = () => {
+  useEffect(() => {
     axios
       .get("https://jsonplaceholder.typicode.com/posts")
       .then(response => {
-        dispatch({ type: "SAVE_BLOGDATA", payload: response.data });
+        setTimeout(() => {
+          setStore(response.data);
+          setError(null);
+        }, 500);
       })
       .catch(error => {
-        console.log(error);
+        setError(error.message);
       });
-  };
-
-  useEffect(() => {
-    getBlogData();
   }, []);
 
-  console.log(store);
-
   return (
-    <div>
+    <div className={classes.container}>
       {store.length > 0 ? (
-        <>{store.map(ele => ele.title)}</>
+        <RenderPost store={store} />
+      ) : error ? (
+        error
       ) : (
-        "No Data,API Must Have Failed"
+        <>
+          <br />
+          Loading...
+          <br />
+          <br />
+          <HashLoader
+            css={override}
+            size={150}
+            color="#4495e5"
+            loading={true}
+          />
+        </>
       )}
     </div>
   );
