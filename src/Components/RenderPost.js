@@ -18,10 +18,13 @@ const useStyles = makeStyles({
   root: {
     maxWidth: 850,
     margin: 10,
-    backgroundImage: "url(Assets/1.jpg)"
+    marginBottom: 30,
+    backgroundImage: "url(Assets/1.jpg)",
+    borderRadius: "20px"
   },
   media: {
-    height: 150
+    height: 150,
+    opacity: 1
   },
   nav: {
     marginTop: 10,
@@ -29,7 +32,6 @@ const useStyles = makeStyles({
     height: 80,
     borderRadius: 5,
     fontSize: 30,
-    opacity: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -45,9 +47,12 @@ const useStyles = makeStyles({
     alignItems: "center"
   },
   paper: {
-    marginTop: "20px",
-    maxHeight: "950px",
-    overflow: "auto"
+    width: 880,
+    height: 1320,
+    marginTop: 20,
+    maxHeight: "85vh",
+    overflow: "auto",
+    backgroundColor: "#fbf7fd"
   }
 });
 
@@ -100,7 +105,7 @@ export default function RenderPost({ store }) {
   return (
     <div className={classes.container}>
       <Paper elevation={3} className={classes.nav}>
-        My Favourite Blogs
+        <b> &nbsp; My Favourite Blogs</b>
         {loading ? (
           <HashLoader
             css={override}
@@ -119,15 +124,23 @@ export default function RenderPost({ store }) {
         ref={scrollref}
         onScroll={loadMorePost}
       >
-        {renderPost.length > 0
-          ? renderPost.map(post => (
-              <Card className={classes.root} key={post.id}>
-                <CardActionArea>
-                  <CardMedia className={classes.media} image="#" title="Blog" />
+        {renderPost.length > 0 ? (
+          renderPost.map(post => (
+            <Card className={classes.root} key={post.id}>
+              <CardActionArea>
+                <CardMedia
+                  className={classes.media}
+                  image="Assets/1.jpg"
+                  title="Blog"
+                />
+                <Paper elevation={3} style={{ opacity: 0.9 }}>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {post.title.toUpperCase()}
                     </Typography>
+                  </CardContent>
+
+                  <CardContent>
                     <Typography
                       variant="h6"
                       color="textSecondary"
@@ -136,30 +149,41 @@ export default function RenderPost({ store }) {
                       {post.body}
                     </Typography>
                   </CardContent>
-                </CardActionArea>
-                <CardActions
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Button size="medium" color="primary">
-                    Share
-                  </Button>
-                  <div>
-                    {loading && post.id === limit ? (
-                      <HashLoader
-                        css={override}
-                        size={35}
-                        color="#2c90e8"
-                        loading={loading}
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div> </div>
-                </CardActions>
-              </Card>
-            ))
-          : "No Post Found !"}
+                </Paper>
+              </CardActionArea>
+              <CardActions
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <Button size="medium" color="primary">
+                  Share
+                </Button>
+                <div>
+                  {loading && post.id === limit ? (
+                    <HashLoader
+                      css={override}
+                      size={35}
+                      color="#2c90e8"
+                      loading={loading}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div> </div>
+              </CardActions>
+            </Card>
+          ))
+        ) : (
+          <Card className={classes.root}>
+            <CardActionArea>
+              <CardMedia
+                style={{ height: 400 }}
+                image="Assets/error.jpg"
+                title="Blog"
+              />
+            </CardActionArea>
+          </Card>
+        )}
       </Paper>
     </div>
   );

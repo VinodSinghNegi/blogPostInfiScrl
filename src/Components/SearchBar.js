@@ -16,15 +16,27 @@ const SearchBar = React.memo(props => {
   }, [searchKey]);
 
   return (
-    <div>
-      {store.length > 4 ? <SearchIcon /> : ""}
-      <TextField
-        color="secondary"
-        disabled={store.length > 4 ? false : true}
-        type="search"
-        placeholder="Search Blog By Title"
-        onChange={event => setSearchKey(event.target.value)}
-      />
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      {store.length > 4 ? <SearchIcon fontSize="large" /> : ""}
+      {store.length > 4 ? "Search " : ""}
+      &nbsp;
+      <div
+        style={{
+          backgroundColor: "#f7f2f5",
+          borderRadius: 8,
+          minHeight: 40
+        }}
+      >
+        &nbsp;
+        <TextField
+          color="secondary"
+          disabled={store.length > 4 ? false : true}
+          type="search"
+          placeholder="Search Blog By Title"
+          onChange={event => setSearchKey(event.target.value)}
+        />
+      </div>
+      &nbsp;
     </div>
   );
 });
