@@ -53,7 +53,7 @@ const Home = () => {
           <br />
           <HashLoader
             css={override}
-            size={150}
+            size={100}
             color="#4495e5"
             loading={true}
           />

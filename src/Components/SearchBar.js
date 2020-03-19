@@ -17,7 +17,7 @@ const SearchBar = React.memo(props => {
   return (
     <div>
       <TextField
-        disabled={store.length > 0 ? false : true}
+        disabled={store.length > 4 ? false : true}
         type="search"
         placeholder="Search Blog By Title"
         onChange={event => setSearchKey(event.target.value)}

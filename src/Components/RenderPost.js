@@ -24,25 +24,25 @@ const useStyles = makeStyles({
     height: 150
   },
   nav: {
-    zIndex: 1,
-    width: 850,
-    height: 100,
+    marginTop: 10,
+    width: 880,
+    height: 80,
     borderRadius: 5,
-    fontSize: 50,
+    fontSize: 30,
     display: "flex",
-    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    position: "fixed",
-    backgroundColor: "#9EC9F6"
+    justifyContent: "space-between",
+    color: "#3e93e8"
+    // backgroundColor: "#9EC9F6"
   },
+
   container: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
   },
   paper: {
-    marginTop: "120px",
+    marginTop: "20px",
     maxHeight: "950px",
     overflow: "auto"
   }
@@ -67,6 +67,7 @@ export default function RenderPost({ store }) {
     if (
       !loading &&
       !searchKey &&
+      limit < store.length &&
       scrollref.current.scrollTop + scrollref.current.clientHeight >=
         scrollref.current.scrollHeight
     ) {
@@ -95,10 +96,20 @@ export default function RenderPost({ store }) {
 
   return (
     <div className={classes.container}>
-      <div className={classes.nav}>
+      <Paper elevation={3} className={classes.nav}>
+        My Favourite Blogs
+        {loading ? (
+          <HashLoader
+            css={override}
+            size={35}
+            color="#4495e5"
+            loading={loading}
+          />
+        ) : (
+          ""
+        )}
         <SearchBar store={searchStore} showSearchedPost={showSearchedPost} />
-      </div>
-
+      </Paper>
       <Paper
         className={classes.paper}
         elevation={3}
@@ -123,21 +134,26 @@ export default function RenderPost({ store }) {
                     </Typography>
                   </CardContent>
                 </CardActionArea>
-                <CardActions>
+                <CardActions
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <Button size="medium" color="primary">
                     Share
                   </Button>
+                  <div>
+                    {loading && post.id === limit ? (
+                      <HashLoader
+                        css={override}
+                        size={35}
+                        color="#4495e5"
+                        loading={loading}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div> </div>
                 </CardActions>
-                {loading ? (
-                  <HashLoader
-                    css={override}
-                    size={40}
-                    color="#4495e5"
-                    loading={loading}
-                  />
-                ) : (
-                  ""
-                )}
               </Card>
             ))
           : "No Post Found !"}
