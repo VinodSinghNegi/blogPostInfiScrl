@@ -6,7 +6,6 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Button,
   Typography,
   Paper
 } from "@material-ui/core/";
@@ -15,21 +14,16 @@ import { css } from "@emotion/core";
 import HashLoader from "react-spinners/HashLoader";
 import SearchBar from "./SearchBar";
 const useStyles = makeStyles({
-  root: {
-    maxWidth: 850,
-    margin: 10,
-    marginBottom: 30,
-    backgroundImage: "url(Assets/1.jpg)",
-    borderRadius: "20px"
-  },
-  media: {
-    height: 150,
-    opacity: 1
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: 1000
   },
   nav: {
     marginTop: 10,
-    width: 880,
-    height: 80,
+    width: "100%",
+    height: 50,
     borderRadius: 5,
     fontSize: 30,
     display: "flex",
@@ -37,22 +31,24 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     color: "#E60D57",
     backgroundImage: "url(Assets/3.jpg)"
-
-    // backgroundColor: "#9EC9F6"
-  },
-
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
   },
   paper: {
-    width: 880,
-    height: 1320,
+    height: 1600,
     marginTop: 20,
-    maxHeight: "85vh",
+    width: "100%",
+    maxHeight: "88vh",
     overflow: "auto",
     backgroundColor: "#fbf7fd"
+  },
+  card: {
+    margin: 100,
+    marginBottom: 30,
+    width: "80%",
+    borderRadius: "20px",
+    backgroundImage: "url(Assets/1.jpg)"
+  },
+  media: {
+    height: 240
   }
 });
 
@@ -66,7 +62,7 @@ export default function RenderPost({ store }) {
   const [renderPost, setRenderPost] = useState([]);
   const [searchStore, setSearchStore] = useState([]);
   const [searchKey, setSearchKey] = useState(null);
-  const [limit, setLimit] = useState(4);
+  const [limit, setLimit] = useState(5);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const scrollref = useRef();
@@ -75,21 +71,21 @@ export default function RenderPost({ store }) {
     if (
       !loading &&
       !searchKey &&
-      limit < store.length &&
+      limit <= store.length &&
       scrollref.current.scrollTop + scrollref.current.clientHeight >=
         scrollref.current.scrollHeight
     ) {
       setLoading(true);
       setTimeout(() => {
-        setLimit(prev => prev + 4);
+        setLimit(prev => prev + 5);
       }, 2000);
     }
   };
 
   useEffect(() => {
+    setLoading(false);
     setRenderPost(store.slice(0, limit));
     setSearchStore(store.slice(0, limit));
-    setLoading(false);
   }, [limit, store]);
 
   const showSearchedPost = (searchResult, searchKey) => {
@@ -101,18 +97,20 @@ export default function RenderPost({ store }) {
       setSearchKey(null);
     }
   };
-
   return (
     <div className={classes.container}>
       <Paper elevation={3} className={classes.nav}>
         <b> &nbsp; My Favourite Blogs</b>
         {loading ? (
-          <HashLoader
-            css={override}
-            size={35}
-            color="#E60D57"
-            loading={loading}
-          />
+          <>
+            {console.log("111 Loader....")}
+            <HashLoader
+              css={override}
+              size={35}
+              color="#E60D57"
+              loading={loading}
+            />
+          </>
         ) : (
           ""
         )}
@@ -125,61 +123,66 @@ export default function RenderPost({ store }) {
         onScroll={loadMorePost}
       >
         {renderPost.length > 0 ? (
-          renderPost.map(post => (
-            <Card className={classes.root} key={post.id}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image="Assets/1.jpg"
-                  title="Blog"
-                />
-                <Paper elevation={3} style={{ opacity: 0.9 }}>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {post.title.toUpperCase()}
-                    </Typography>
-                  </CardContent>
-
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      {post.body}
-                    </Typography>
-                  </CardContent>
-                </Paper>
-              </CardActionArea>
-              <CardActions
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Button size="medium" color="primary">
-                  Share
-                </Button>
-                <div>
-                  {loading && post.id === limit ? (
-                    <HashLoader
-                      css={override}
-                      size={35}
-                      color="#2c90e8"
-                      loading={loading}
+          renderPost.map((post, index) => (
+            <center key={post.id}>
+              <Card className={classes.card}>
+                <CardActionArea>
+                  <a href={post.links.html}>
+                    <CardMedia
+                      className={classes.media}
+                      image={post.cover_photo.urls.regular}
+                      title={"Visit " + post.title + " on Unsplash Website"}
                     />
+                  </a>
+
+                  <Paper elevation={3} style={{ opacity: 0.9 }}>
+                    <CardContent>
+                      <Typography gutterBottom variant="h6">
+                        {post.title.toUpperCase()}
+                      </Typography>
+
+                      <Typography variant="h6" color="textSecondary">
+                        {post.tags.map(tag =>
+                          tag.source ? tag.source.description : ""
+                        )}
+                      </Typography>
+                    </CardContent>
+                  </Paper>
+                </CardActionArea>
+                <CardActions
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center"
+                  }}
+                >
+                  {/* <Button size="medium" color="primary">
+                    View
+                  </Button> */}
+                  {loading && index + 1 === limit ? (
+                    <>
+                      {console.log("166 Loader....")}
+                      <HashLoader
+                        css={override}
+                        size={35}
+                        color="#2c90e8"
+                        loading={loading}
+                      />
+                    </>
                   ) : (
                     ""
                   )}
-                </div>
-                <div> </div>
-              </CardActions>
-            </Card>
+                </CardActions>
+              </Card>
+            </center>
           ))
         ) : (
-          <Card className={classes.root}>
+          <Card className={classes.card}>
             <CardActionArea>
               <CardMedia
-                style={{ height: 400 }}
                 image="Assets/error.jpg"
                 title="Blog"
+                style={{ height: 400 }}
               />
             </CardActionArea>
           </Card>

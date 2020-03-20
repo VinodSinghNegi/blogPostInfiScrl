@@ -3,9 +3,9 @@ import axios from "axios";
 import RenderPost from "./Components/RenderPost";
 import HashLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/core";
-
 import { makeStyles } from "@material-ui/core/styles";
 
+const key = "EEnadRv6rmSQl85Va4pHps162m3mKan_ujUUnN3xzFU";
 const override = css`
   display: block;
   margin: 0 auto;
@@ -27,12 +27,13 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/posts")
+      .get(
+        `https://api.unsplash.com/collections?page=${3}&per_page=${50}&client_id=${key}`
+      )
       .then(response => {
-        setTimeout(() => {
-          setStore(response.data);
-          setError(null);
-        }, 500);
+        console.log(response.data);
+        setStore(response.data);
+        setError(null);
       })
       .catch(error => {
         setError(error.message);
@@ -41,7 +42,7 @@ const Home = () => {
 
   return (
     <div className={classes.container}>
-      {store.length > 0 ? (
+      {store.length >0 ? (
         <RenderPost store={store} />
       ) : error ? (
         error
@@ -51,9 +52,10 @@ const Home = () => {
           Loading...
           <br />
           <br />
+          {console.log("Loader....")}
           <HashLoader
             css={override}
-            size={100}
+            size={80}
             color="#4495e5"
             loading={true}
           />

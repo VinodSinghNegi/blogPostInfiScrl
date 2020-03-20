@@ -9,7 +9,7 @@ const SearchBar = React.memo(props => {
 
   useEffect(() => {
     showSearchedPost(
-      store.filter(post => post.title.includes(searchKey)),
+      store.filter(post => post.title.toLowerCase().includes(searchKey)),
       searchKey
     );
     // eslint-disable-next-line
