@@ -28,10 +28,9 @@ const Home = () => {
   useEffect(() => {
     axios
       .get(
-        `https://api.unsplash.com/collections?page=${3}&per_page=${50}&client_id=${key}`
+        `https://api.unsplash.com/collections?page=${3}&per_page=${30}&client_id=${key}`
       )
       .then(response => {
-        console.log(response.data);
         setStore(response.data);
         setError(null);
       })
@@ -42,7 +41,7 @@ const Home = () => {
 
   return (
     <div className={classes.container}>
-      {store.length >0 ? (
+      {store.length > 0 ? (
         <RenderPost store={store} />
       ) : error ? (
         error
@@ -52,13 +51,7 @@ const Home = () => {
           Loading...
           <br />
           <br />
-          {console.log("Loader....")}
-          <HashLoader
-            css={override}
-            size={80}
-            color="#4495e5"
-            loading={true}
-          />
+          <HashLoader css={override} size={80} color="#4495e5" loading={true} />
         </>
       )}
     </div>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { TextField } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
 
 const SearchBar = React.memo(props => {
   const { store, showSearchedPost } = props;
@@ -17,8 +16,6 @@ const SearchBar = React.memo(props => {
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      {store.length > 4 ? <SearchIcon fontSize="large" /> : ""}
-      {store.length > 4 ? "Search " : ""}
       &nbsp;
       <div
         style={{
@@ -30,7 +27,7 @@ const SearchBar = React.memo(props => {
         &nbsp;
         <TextField
           color="secondary"
-          disabled={store.length > 4 ? false : true}
+          disabled={store.length > 5 ? false : true}
           type="search"
           placeholder="Search Blog By Title"
           onChange={event => setSearchKey(event.target.value)}

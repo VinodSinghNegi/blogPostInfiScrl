@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
-  CardActions,
   CardActionArea,
   CardContent,
   CardMedia,
@@ -18,14 +17,14 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: 1000
+    maxWidth: "60%"
   },
   nav: {
     marginTop: 10,
     width: "100%",
     height: 50,
     borderRadius: 5,
-    fontSize: 30,
+    fontSize: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -33,19 +32,15 @@ const useStyles = makeStyles({
     backgroundImage: "url(Assets/3.jpg)"
   },
   paper: {
-    height: 1600,
     marginTop: 20,
     width: "100%",
-    maxHeight: "88vh",
+    maxHeight: "80vh",
     overflow: "auto",
     backgroundColor: "#fbf7fd"
   },
   card: {
-    margin: 100,
-    marginBottom: 30,
-    width: "80%",
-    borderRadius: "20px",
-    backgroundImage: "url(Assets/1.jpg)"
+    margin: 50,
+    borderRadius: "20px"
   },
   media: {
     height: 240
@@ -103,7 +98,6 @@ export default function RenderPost({ store }) {
         <b> &nbsp; My Favourite Blogs</b>
         {loading ? (
           <>
-            {console.log("111 Loader....")}
             <HashLoader
               css={override}
               size={35}
@@ -126,54 +120,39 @@ export default function RenderPost({ store }) {
           renderPost.map((post, index) => (
             <center key={post.id}>
               <Card className={classes.card}>
-                <CardActionArea>
-                  <a href={post.links.html}>
-                    <CardMedia
-                      className={classes.media}
-                      image={post.cover_photo.urls.regular}
-                      title={"Visit " + post.title + " on Unsplash Website"}
-                    />
-                  </a>
+                <a href={post.links.html}>
+                  <CardMedia
+                    className={classes.media}
+                    image={post.cover_photo.urls.regular}
+                    title={"Visit " + post.title + " on Unsplash Website"}
+                  />
+                </a>
 
-                  <Paper elevation={3} style={{ opacity: 0.9 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h6">
-                        {post.title.toUpperCase()}
-                      </Typography>
+                <CardContent>
+                  <Typography>{post.title.toUpperCase()}</Typography>
 
-                      <Typography variant="h6" color="textSecondary">
-                        {post.tags.map(tag =>
-                          tag.source ? tag.source.description : ""
-                        )}
-                      </Typography>
-                    </CardContent>
-                  </Paper>
-                </CardActionArea>
-                <CardActions
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center"
-                  }}
-                >
-                  {/* <Button size="medium" color="primary">
-                    View
-                  </Button> */}
-                  {loading && index + 1 === limit ? (
-                    <>
-                      {console.log("166 Loader....")}
-                      <HashLoader
-                        css={override}
-                        size={35}
-                        color="#2c90e8"
-                        loading={loading}
-                      />
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </CardActions>
+                  <Typography
+                    color="textSecondary"
+                    style={{ fontSize: "15px" }}
+                  >
+                    {post.tags.map(tag =>
+                      tag.source ? tag.source.description : ""
+                    )}
+                  </Typography>
+                </CardContent>
               </Card>
+              {loading && index + 1 === limit ? (
+                <>
+                  <HashLoader
+                    css={override}
+                    size={35}
+                    color="#2c90e8"
+                    loading={loading}
+                  />
+                </>
+              ) : (
+                ""
+              )}
             </center>
           ))
         ) : (
